@@ -107,7 +107,7 @@ def process_files(arr_files, separated, output_dir):
             # extract the name and the extension of the file
             name, _ = os.path.splitext(file)
             # set the content of the file
-            content = header + filename.ljust(50) + '\t' + crc_value + '\n'
+            content = header + filename + '\t' + crc_value + '\n'
 
             # the sfv file path
             dir_to_file = output_dir + '/' + name + ext
@@ -144,9 +144,12 @@ def main(argv):
         opts, args = getopt.getopt(argv[1:], 'hsd:f:o:l:', ['help', 'file=', 'directory=', 'output=', 'separated=', 'level='])
     except getopt.GetoptError: usage(argv[0])
     
+    if (len(argv) < 2):
+        usage(argv[0])
+    
     arr_files = []
     arr_dir = []
-    output_dir = ''
+    output_dir = './'
     separated = True
     level = 0
     
