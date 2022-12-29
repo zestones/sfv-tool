@@ -1,6 +1,6 @@
 # sfv-tool
 
-**Simple file verification** (SFV) is a file format for storing CRC32 checksums of files to verify the integrity of files. SFV is used to verify that a file has not been corrupted, but it does not otherwise verify the file's authenticity. The .sfv file extension is usually used for SFV files. (_more :_ [wikipedia](https://en.wikipedia.org/wiki/Simple_file_verification))
+**Simple file verification** (SFV) is a file format for storing CRC32 checksums of files to verify the integrity of files. SFV is used to verify that a file has not been corrupted, but it does not otherwise verify the file's authenticity. The .sfv file extension is usually used for SFV files. ([wikipedia](https://en.wikipedia.org/wiki/Simple_file_verification))
 
 
 This tool enable you to generate SFV easily for your files.
@@ -90,4 +90,5 @@ python3 sfv-generator.py -l 2 -d ./folder
 
 > **WARNING**  
 > You should not mix ``-f`` and ``-d`` options.
-> When providing a list of files or folders, be sure to add the ``-f`` or ``-d`` option before each file or folder.
+>
+>  When providing a list of files or folders, be sure to add the ``-f`` or ``-d`` option before each file or folder.
