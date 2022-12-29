@@ -6,7 +6,6 @@ import zlib
 import sys
 import os
 
-
 # colors 
 class bcolors:
     HEADER = '\033[95m'
@@ -18,6 +17,8 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+    
+POSITIVE_ANSWER = 'y'
 
 # usage message
 def usage(program):
@@ -54,6 +55,7 @@ def usage(program):
     
     sys.exit()
 
+# os walk re-definition with level
 def walklevel(some_dir, level=1):
     some_dir = some_dir.rstrip(os.path.sep)
     assert os.path.isdir(some_dir)
@@ -72,42 +74,54 @@ def crc(filename):
         prev = zlib.crc32(line, prev)
     return "%X" % (prev & 0xFFFFFFFF)
 
+def error_file_exist(file):
+    print(bcolors.WARNING + 'The file already exist \"' + bcolors.BOLD + file + '\".' + bcolors.ENDC)
+    response = input(bcolors.BOLD + '> Do you want overwrite it ? Y/N ' + bcolors.ENDC)
+    return response.lower()
 
-def write_sfv(filename, opt, output_dir):
+# write/create the the content of the sfv file 
+def write_sfv(dir_to_file, content):
+    os.makedirs(os.path.dirname(dir_to_file), exist_ok=True)
     
-    # get the file name from the path
-    file = os.path.basename(filename)
-  
-    if (opt == 'a+'):
-        name = 'auto-generated'
-    else:
-        # extract the name and the extension of the file
-        name, _ = os.path.splitext(file)
-    
-    if (output_dir != ''):
-            dir_to_file = output_dir + '/' + name + '.sfv'
-            os.makedirs(os.path.dirname(dir_to_file), exist_ok=True)
-            f = open(dir_to_file, opt)
-    else:
-        f = open(name + '.sfv', opt)
-        
-    crc_value = crc(filename) 
-    f.write(file + '\t' + crc_value + '\n')
-
+    f = open(dir_to_file, 'w+')
+    f.write(content)
     f.close()
 
 # processs the files passed in parameter
 def process_files(arr_files, separated, output_dir):
-        
-    if(separated): opt = "w+"
-    else: opt = "a+"
+    header = '; author : zestones -- open source code : https://github.com/zestones/sfv-tool\n\n'
+    content, ext = '', '.sfv'
+    
+    if(not separated): content = header
     
     for file in arr_files:
         if (os.path.isdir(file)):
             print(bcolors.WARNING + "> " +  file + " : " + bcolors.FAIL + "Folders can't be processed !" + bcolors.ENDC)
             continue
         
-        write_sfv(file, opt, output_dir)
+        crc_value = crc(file)
+        filename = os.path.basename(file)
+       
+        if (not separated): content += filename.ljust(60) + '\t'.expandtabs(50) + crc_value + '\n'
+        else:               
+            # extract the name and the extension of the file
+            name, _ = os.path.splitext(file)
+            # set the content of the file
+            content = header + filename.ljust(50) + '\t' + crc_value + '\n'
+
+            # the sfv file path
+            dir_to_file = output_dir + '/' + name + ext
+            if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file) != POSITIVE_ANSWER): continue
+              
+            # write the file content
+            write_sfv(dir_to_file, content)
+   
+    if(not separated): 
+        name = 'auto-generated'
+        dir_to_file = output_dir + '/' + name + ext
+        if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file) != POSITIVE_ANSWER): return
+        
+        write_sfv(dir_to_file, content)
 
 # processs the directory passed in parameter
 def process_directory(arr_dir, separated, output_dir, level):
@@ -119,6 +133,7 @@ def process_directory(arr_dir, separated, output_dir, level):
             for name in files:
                 arr_files.append(os.path.join(path, name))
     
+    if (arr_files == []): return
     process_files(arr_files, separated, output_dir)
 
 # main function
@@ -154,9 +169,10 @@ def main(argv):
         
         elif opt in ('-l', '--level'):
             level = int(arg)
-        
-    process_files(arr_files, separated, output_dir)
-    process_directory(arr_dir, separated, output_dir, level)
+    
+    print()
+    if (arr_files != []): process_files(arr_files, separated, output_dir)
+    if (arr_dir != []): process_directory(arr_dir, separated, output_dir, level)
 
 
 if __name__ == '__main__':
