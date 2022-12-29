@@ -14,7 +14,7 @@ First of all clone this repository.
 git clone git@github.com:zestones/sfv-tool.git
 ```
 
-You can see the how to use the program by executing this command: 
+You can see how to use the program by executing this command: 
 
 ```
 python3 sfv-generator.py -h 
@@ -37,7 +37,7 @@ python3 sfv-generator.py -f myfile.ext -o ./myfolder/
 You can also give a list of file :
 
 ```
-python3 sfv-generator.py -f myfile-1.ext myfile-2.ext -o ./myfolder/
+python3 sfv-generator.py -f myfile-1.ext -f myfile-2.ext -o ./myfolder/
 ```
 Then, you should have the following folder structure :
 
@@ -50,7 +50,7 @@ myfolder
 If you want to merge the the output you can add the ``--separated`` option :
 
 ```
-python3 sfv-generator.py -s -f myfile-1.ext myfile-2.ext -o ./myfolder/
+python3 sfv-generator.py -s -f myfile-1.ext -f myfile-2.ext -o ./myfolder/
 ```
 This way the output will be redirected inside an unique file, your folder structure will be :
 
@@ -74,7 +74,7 @@ python3 sfv-generator.py -d ./folder
 python3 sfv-generator.py -d ./folder -o ./newFolder
 
 # generate SFV file for each file inside "./folder" and redirect the output to "./newFolder" (the output is merged in a single file)
-python3 sfv-generator.py -s -d ./folder-1/ ./folder-2/ -o ./myfolder/
+python3 sfv-generator.py -s -d ./folder-1/ -d ./folder-2/ -o ./myfolder/
 ```
 
 By default the program search inside the folder provided but do not check the content of subfolders. If you have subfolders and want to generate SFV file for them you can provide the search depth with the ``--level`` option. 
@@ -90,4 +90,4 @@ python3 sfv-generator.py -l 2 -d ./folder
 
 > **WARNING**  
 > You should not mix ``-f`` and ``-d`` options.
->  
+> When providing a list of files or folders, be sure to add the ``-f`` or ``-d`` option before each file or folder.
