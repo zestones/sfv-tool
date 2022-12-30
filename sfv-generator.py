@@ -184,6 +184,7 @@ def main(argv):
     print()
     if (arr_files != []): process_files(arr_files, separated, output_dir)
     if (arr_dir != []): process_directory(arr_dir, arr_ext, separated, output_dir, level)
+    print(bcolors.OKGREEN + "> Done !" + bcolors.ENDC)
 
 
 if __name__ == '__main__':
