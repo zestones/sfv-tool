@@ -105,10 +105,9 @@ def process_files(arr_files, separated, output_dir):
         if (not separated): content += filename.ljust(60) + '\t'.expandtabs(50) + crc_value + '\n'
         else:               
             # extract the name and the extension of the file
-            name, _ = os.path.splitext(file)
+            name, _ = os.path.splitext(filename)
             # set the content of the file
             content = header + filename + '\t' + crc_value + '\n'
-
             # the sfv file path
             dir_to_file = output_dir + '/' + name + ext
             if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file) != POSITIVE_ANSWER): continue
@@ -124,7 +123,7 @@ def process_files(arr_files, separated, output_dir):
         write_sfv(dir_to_file, content)
 
 # processs the directory passed in parameter
-def process_directory(arr_dir, separated, output_dir, level):
+def process_directory(arr_dir, arr_ext, separated, output_dir, level):
     arr_files = []
 
     # retrieve the files inside the directories
@@ -141,7 +140,7 @@ def main(argv):
     
     # get the option 
     try:
-        opts, args = getopt.getopt(argv[1:], 'hsd:f:o:l:', ['help', 'file=', 'directory=', 'output=', 'separated=', 'level='])
+        opts, args = getopt.getopt(argv[1:], 'hsd:f:o:l:e:', ['help', 'file=', 'directory=', 'output=', 'separated=', 'level=', 'extension='])
     except getopt.GetoptError: usage(argv[0])
     
     if (len(argv) < 2):
@@ -149,6 +148,7 @@ def main(argv):
     
     arr_files = []
     arr_dir = []
+    arr_ext = []
     output_dir = './'
     separated = True
     level = 0
@@ -172,10 +172,13 @@ def main(argv):
         
         elif opt in ('-l', '--level'):
             level = int(arg)
+        
+        elif opt in ('-e', '--extension'):
+            level = arg
     
     print()
     if (arr_files != []): process_files(arr_files, separated, output_dir)
-    if (arr_dir != []): process_directory(arr_dir, separated, output_dir, level)
+    if (arr_dir != []): process_directory(arr_dir, arr_ext, separated, output_dir, level)
 
 
 if __name__ == '__main__':
