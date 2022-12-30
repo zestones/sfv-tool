@@ -74,8 +74,10 @@ def crc(filename):
         prev = zlib.crc32(line, prev)
     return "%X" % (prev & 0xFFFFFFFF)
 
-def error_file_exist(file):
-    print(bcolors.WARNING + 'The file already exist \"' + bcolors.BOLD + file + '\".' + bcolors.ENDC)
+def error_file_exist(file, source_file):
+    print(bcolors.WARNING + 'The file \"' + bcolors.BOLD + file + '\" already exist.' + bcolors.ENDC)
+    if source_file != '': print(bcolors.BOLD + 'The source file is : ' + bcolors.FAIL + source_file + bcolors.ENDC)
+    
     response = input(bcolors.BOLD + '> Do you want overwrite it ? Y/N ' + bcolors.ENDC)
     return response.lower()
 
@@ -103,14 +105,16 @@ def process_files(arr_files, separated, output_dir):
         filename = os.path.basename(file)
        
         if (not separated): content += filename.ljust(60) + '\t'.expandtabs(50) + crc_value + '\n'
-        else:               
+        else:
+            if output_dir == './': path = file
+            else : path = filename          
             # extract the name and the extension of the file
-            name, _ = os.path.splitext(filename)
+            name, _ = os.path.splitext(path)
             # set the content of the file
             content = header + filename + '\t' + crc_value + '\n'
             # the sfv file path
             dir_to_file = output_dir + '/' + name + ext
-            if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file) != POSITIVE_ANSWER): continue
+            if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file, file) != POSITIVE_ANSWER): continue
               
             # write the file content
             write_sfv(dir_to_file, content)
@@ -118,20 +122,22 @@ def process_files(arr_files, separated, output_dir):
     if(not separated): 
         name = 'auto-generated'
         dir_to_file = output_dir + '/' + name + ext
-        if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file) != POSITIVE_ANSWER): return
+        if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file, "") != POSITIVE_ANSWER): return
         
         write_sfv(dir_to_file, content)
 
 # processs the directory passed in parameter
 def process_directory(arr_dir, arr_ext, separated, output_dir, level):
     arr_files = []
-
     # retrieve the files inside the directories
     for dir in arr_dir:
         for path, subdirs, files in walklevel(dir, level):
-            for name in files:
-                arr_files.append(os.path.join(path, name))
-    
+            for file in files:
+                _, ext = os.path.splitext(file)
+                if arr_ext != []:
+                    if ext in arr_ext: arr_files.append(os.path.join(path, file))
+                else: arr_files.append(os.path.join(path, file))
+                
     if (arr_files == []): return
     process_files(arr_files, separated, output_dir)
 
@@ -140,11 +146,10 @@ def main(argv):
     
     # get the option 
     try:
-        opts, args = getopt.getopt(argv[1:], 'hsd:f:o:l:e:', ['help', 'file=', 'directory=', 'output=', 'separated=', 'level=', 'extension='])
+        opts, _ = getopt.getopt(argv[1:], 'hsd:f:o:l:e:', ['help', 'file=', 'directory=', 'output=', 'separated=', 'level=', 'extension='])
     except getopt.GetoptError: usage(argv[0])
     
-    if (len(argv) < 2):
-        usage(argv[0])
+    if (len(argv) < 2): usage(argv[0])
     
     arr_files = []
     arr_dir = []
@@ -174,7 +179,7 @@ def main(argv):
             level = int(arg)
         
         elif opt in ('-e', '--extension'):
-            level = arg
+            arr_ext.append(arg)
     
     print()
     if (arr_files != []): process_files(arr_files, separated, output_dir)
