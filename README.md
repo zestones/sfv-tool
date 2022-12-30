@@ -28,7 +28,8 @@ You can provide a file like below :
 python3 sfv-generator.py -f myfile.ext
 ```
 
-The SFV will be created in the folder of the provided file, if you want to redirect the output in a new or different folder add the option ``--output``:
+The SFV will be created in the folder of the provided file, if you want to redirect the output in a new or different folder add the option ``--output``.
+
 
 ```
 python3 sfv-generator.py -f myfile.ext -o ./myfolder/
@@ -74,8 +75,12 @@ python3 sfv-generator.py -d ./folder
 python3 sfv-generator.py -d ./folder -o ./newFolder
 
 # generate SFV file for each file inside "./folder" and redirect the output to "./newFolder" (the output is merged in a single file)
-python3 sfv-generator.py -s -d ./folder-1/ -d ./folder-2/ -o ./myfolder/
+python3 sfv-generator.py -s -d ./folder-1/ -d ./folder-2/ -o ./newfolder/
 ```
+
+> **NOTE**  
+>
+>  When you don't give an output the SFV files are created in the directory of the source file. 
 
 By default the program search inside the folder provided but do not check the content of subfolders. If you have subfolders and want to generate SFV file for them you can provide the search depth with the ``--level`` option. 
 
@@ -84,11 +89,27 @@ In the example below, the program will search to a depth of 2.
 python3 sfv-generator.py -l 2 -d ./folder
 ```
 
+Sometimes you may want to generate SFV files by providing a folder but not on all the files. You can filter the files by their extension, for that just use the ``--extension`` option.
+
+As for the --file or the --directory option you can provide a list of extensions. This way you will generate SFV file for all the files inside the directory that has the extension specified.
+
+```
+# specify a file extension
+python3 sfv-generator.py -e .zip -d ./folder
+
+# specify a list of extension
+python3 sfv-generator.py -e .zip -e .rar -e .tar -d ./folder
+```
+> **WARNING**  
+>
+> This option should be used only with the ``--directory`` option (there is no use to use it with the ``--file`` option).
+
+
 ## **Usage advice**
 * Use the ``--help`` (``-h``) option to show how to use the program.  
 * Note that the ``--level`` (``-l``) option should not be used with the option ``--file`` (``-f``). 
-
 > **WARNING**  
+>
 > You should not mix ``-f`` and ``-d`` options.
 >
 >  When providing a list of files or folders, be sure to add the ``-f`` or ``-d`` option before each file or folder.
