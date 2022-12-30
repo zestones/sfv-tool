@@ -4,5 +4,5 @@
 
 This repository is composed of two script : ``sfv-generator.py`` and ``sfv-validator.py``.
  
- * sfv-generator : generate SFV for your files.
- * sfv-validator : verify that your files has not been corrupted.
+ * [sfv-generator](https://github.com/zestones/sfv-tool/tree/main/sfv-generator) : generate SFV for your files.
+ * [sfv-validator](https://github.com/zestones/sfv-tool/tree/main/sfv-validator) : verify that your files has not been corrupted.

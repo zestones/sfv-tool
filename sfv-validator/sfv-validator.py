@@ -51,6 +51,14 @@ def process_source_hash(arr_source, arr_hash, dir):
         path = os.path.join(dir, file)
         check_corruption(path, hash)
 
+def process_source_hash_depth(arr_file, arr_hash, dir):
+    print("okay")
+    print(dir)
+    for path, _, files in os.walk(dir):
+        for name in files:
+            filename = os.path.join(path, name)
+            print(filename) 
+
 def retrieve_file_data(file):
     arr_file, arr_hash = [], []
     
@@ -66,22 +74,29 @@ def retrieve_file_data(file):
     
     return arr_file, arr_hash
 
-def process_sfv_file(arr_sfv):
+def process_sfv_file(arr_sfv, depth):
+    print(depth)
+    print(arr_sfv)
     for file in arr_sfv: 
         dir = os.path.dirname(file)
         arr_file, arr_hash = retrieve_file_data(file)
-        process_source_hash(arr_file, arr_hash, dir)
-
+        if not depth: process_source_hash(arr_file, arr_hash, dir)
+        else : process_source_hash_depth(arr_file, arr_hash, dir)
+             
+            
 # main function
 def main(argv):
     
     # get the option 
     try:
-        opts, args = getopt.getopt(argv[1:], 'hf:c:s:', ['help', 'file=', 'crc=', 'sfv='])
+        opts, args = getopt.getopt(argv[1:], 'hfc:s:d', ['help', 'file=', 'crc=', 'sfv=', 'depth'])
     except getopt.GetoptError: usage(argv[0])
     
     if (len(argv) < 2): usage(argv[0])
+    print(args)
+    print(opts)
     
+    depth = False
     arr_source = []
     arr_sfv = []
     arr_crc_hash = []
@@ -99,11 +114,14 @@ def main(argv):
         
         elif opt in ('-s', '--sfv'):
             arr_sfv.append(arg)
+            
+        elif opt in ('-d', '--depth'):
+            depth = True
     
     
     print()
     process_source_hash(arr_source, arr_crc_hash, '')
-    process_sfv_file(arr_sfv)
+    process_sfv_file(arr_sfv, depth)
 
 
 if __name__ == '__main__':

@@ -119,9 +119,7 @@ def process_files(arr_files, separated, output_dir):
             # write the file content
             write_sfv(dir_to_file, content)
    
-    if(not separated): 
-        if output_dir == './': output_dir = os.path.dirname(arr_files[0])        
-    
+    if(not separated):    
         name = 'auto-generated'
         dir_to_file = output_dir + '/' + name + ext
         if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file, "") != POSITIVE_ANSWER): return
@@ -144,7 +142,8 @@ def process_directory(arr_dir, arr_ext, separated, output_dir, level):
         if (arr_files == []): continue
         # if there is no output provided, create SFV file inside each given folder
         if (output_dir == './'):
-            process_files(arr_files, separated, output_dir)
+            if separated: process_files(arr_files, separated, output_dir)
+            else : process_files(arr_files, separated, dir)
             arr_files = []
    
    # if an output file is given, redirect output to that directory

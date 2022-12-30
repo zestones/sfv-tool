@@ -77,8 +77,18 @@ python3 sfv-generator.py -s -d ./folder-1/ -d ./folder-2/ -o ./newfolder/
 
 > **NOTE**  
 >
->  * When you don't give an output the SFV files are created in the directory of the source file. 
-> * If you provide multiple folders without an ouput directory, the SFV files will be created inside each folder provided.
+> When you don't give an output the SFV files are created in the directory of the source file. 
+> 
+
+> **WARNING**
+> 
+> If you provide multiple folders without an ouput directory there is two possibility : 
+>
+> **1.** You use the ``--separated`` option (``-s``) to merge the output, then the SFV will be created inside the parent folder.
+>
+> **2.** You dont use the -s option, then each SFV will be created were the source file is located.
+>
+> This **warning** apply only if you set the ``--level`` of search, otherwise the SFV will be generated inside the parent directory given in parameter.   
 
 By default the program search inside the folder provided but do not check the content of subfolders. If you have subfolders and want to generate SFV file for them you can provide the search depth with the ``--level`` option. 
 
