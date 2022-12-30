@@ -46,9 +46,10 @@ def check_corruption(file, crc_hash):
     if (crc(file) == crc_hash): print(bcolors.OKGREEN + '> The file ' + bcolors.OKBLUE  + bcolors.BOLD + '\"' +  file + '\"' + bcolors.ENDC + bcolors.OKGREEN + ' is not corrupted !' + bcolors.ENDC)
     else : print(bcolors.FAIL + '> The file ' + bcolors.WARNING + bcolors.BOLD + '\"' + file + '\"' + bcolors.ENDC + bcolors.FAIL + ' is corrupted !' + bcolors.ENDC)
     
-def process_source_hash(arr_source, arr_hash):
+def process_source_hash(arr_source, arr_hash, dir):
     for file, hash in zip(arr_source, arr_hash):
-        check_corruption(file, hash)
+        path = os.path.join(dir, file)
+        check_corruption(path, hash)
 
 def retrieve_file_data(file):
     arr_file, arr_hash = [], []
@@ -63,14 +64,13 @@ def retrieve_file_data(file):
             arr_file.append(data[0])
             arr_hash.append(data[1])
     
-    print(arr_file)
-    print(arr_hash)
     return arr_file, arr_hash
 
 def process_sfv_file(arr_sfv):
     for file in arr_sfv: 
+        dir = os.path.dirname(file)
         arr_file, arr_hash = retrieve_file_data(file)
-        process_source_hash(arr_file, arr_hash)
+        process_source_hash(arr_file, arr_hash, dir)
 
 # main function
 def main(argv):
@@ -102,7 +102,7 @@ def main(argv):
     
     
     print()
-    process_source_hash(arr_source, arr_crc_hash)
+    process_source_hash(arr_source, arr_crc_hash, '')
     process_sfv_file(arr_sfv)
 
 
