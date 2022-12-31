@@ -104,7 +104,7 @@ def process_files(arr_files, separated, output_dir):
         crc_value = crc(file)
         filename = os.path.basename(file)
        
-        if (not separated): content += filename.ljust(60) + '\t'.expandtabs(50) + crc_value + '\n'
+        if (not separated): content += filename.ljust(50) + '\t'.expandtabs(50) + '\t' + crc_value + '\n'
         else:
             if output_dir == './': path = file
             else : path = filename          
