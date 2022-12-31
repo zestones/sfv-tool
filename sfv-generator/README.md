@@ -6,14 +6,15 @@ This tool enable you to generate SFV easily for your files. Let's see how to use
 
 First of all clone this repository.
 
-```
+```bash
 # clone the repo
 git clone git@github.com:zestones/sfv-tool.git
 ```
 
 You can see how to use the program by executing this command: 
 
-```
+```bash
+# see how to use the script
 python3 sfv-generator.py -h 
 ```
 
@@ -64,7 +65,7 @@ If you want to generate SFV for all files inside a folder you can use the ``--di
 
 The usage is the same as for the files, you can provide a unique folder or a list of folder. And merge the output if you want only one SFV file.
 
-```
+```bash
 # generate SFV file for each file inside "./folder"
 python3 sfv-generator.py -d ./folder
 
@@ -101,7 +102,7 @@ Sometimes you may want to generate SFV files by providing a folder but not on al
 
 As for the --file or the --directory option you can provide a list of extensions. This way you will generate SFV file for all the files inside the directory that has the extension specified.
 
-```
+```bash
 # specify a file extension
 python3 sfv-generator.py -e .zip -d ./folder
 
