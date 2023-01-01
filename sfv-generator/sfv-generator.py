@@ -19,6 +19,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
     
 POSITIVE_ANSWER = 'y'
+OUTPUT_FILENAME = 'auto-generated'
 
 # usage message
 def usage(program):
@@ -47,7 +48,10 @@ def usage(program):
     print('\tIf you dont provide a level, it will be set to 0 by default')
     
     print(bcolors.BOLD + '\nProvide an output directory : \n' + bcolors.ENDC)
-    print('\t-o <directory> | the generated files will be created in <directory>')
+    print('\t-o <outputfolder> | the generated files will be created in <directory>')
+    
+    print(bcolors.BOLD + '\nProvide an output file : \n' + bcolors.ENDC)
+    print('\t-o <outputfile> | the content will be writed inside the file')
     
     print(bcolors.BOLD + '\nOutput files : \n' + bcolors.ENDC)
     print('\t-s | Adding this option will generate one sfv file for all provided files')
@@ -123,7 +127,7 @@ def process_files(arr_files, separated, output_dir):
             write_sfv(dir_to_file, content)
    
     if(not separated):    
-        name = 'auto-generated'
+        name = OUTPUT_FILENAME
         dir_to_file = output_dir + '/' + name + ext
         if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file, "") != POSITIVE_ANSWER): return
         
@@ -161,14 +165,14 @@ def process_directory(arr_dir, arr_ext, separated, output_dir, level):
 
 # main function
 def main(argv):
-    
     # get the option 
     try:
-        opts, _ = getopt.getopt(argv[1:], 'hsd:f:o:l:e:', ['help', 'file=', 'directory=', 'output=', 'separated=', 'level=', 'extension='])
+        opts, _ = getopt.getopt(argv[1:], 'hsd:f:o:l:e:O:', ['help', 'file=', 'directory=', 'output=', 'separated=', 'level=', 'extension=', 'outputfile='])
     except getopt.GetoptError: usage(argv[0])
     
     if (len(argv) < 2): usage(argv[0])
     
+    global OUTPUT_FILENAME
     arr_files = []
     arr_dir = []
     arr_ext = []
@@ -187,7 +191,7 @@ def main(argv):
         elif opt in ('-d', '--directory'):
             arr_dir.append(arg)
         
-        elif opt in ('-o', '--output'):
+        elif opt in ('-o', '--outputfolder'):
             output_dir = arg
         
         elif opt in ('-s', '--separated'):
@@ -198,6 +202,8 @@ def main(argv):
         
         elif opt in ('-e', '--extension'):
             arr_ext.append(arg)
+        elif opt in ('-O', '--outputfile'):
+            OUTPUT_FILENAME = arg
     
     print()
     if (arr_files != []): process_files(arr_files, separated, output_dir)

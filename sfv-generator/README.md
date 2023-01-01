@@ -25,7 +25,8 @@ python3 sfv-generator.py -h
 | ``--help`` (``-h``)  | Show help  |
 | ``--file`` (``-f``)  |  Provide a file |
 | ``--directory`` (``-d``)  |  Provide a folder |
-| ``--output`` (``-o``)  |  Specify an output |
+| ``--outputfolder`` (``-o``)  |  Specify a folder for the output |
+| ``--outputfile`` (``-O``)  |  Specify the a filename of the output |
 | ``--separated`` (``-s``)  |  Merge the output |
 | ``--level`` (``-l``)  |  Specify the search depth |
 
@@ -126,6 +127,22 @@ python3 sfv-generator.py -e .zip -e .rar -e .tar -d ./folder
 >
 > This option should be used only with the ``--directory`` option (there is no use to use it with the ``--file`` option).
 
+You might want, to change the default name of the generated files. When you merge the output the default name of the output file is "auto-generated", if you want to change this name you can use the ``--outputfile`` option (``-O``).
+
+```bash
+# change the output filename
+python3 sfv-generator.py -s -d ./folder -O newname
+```
+
+You can of course mix the ``--outputfile`` (``-O``) and ``--outputfolder`` (``-o``) options, to specify an output folder and an output file.
+
+```bash
+# change the output filename
+python3 sfv-generator.py -s -d ./folder -o ./newfolder -O newname
+```
+
+The option ``--outputfile`` (``-O``) also work with the ``--file`` (``-f``) option. 
+
 
 ## **Usage advice**
 * Use the ``--help`` (``-h``) option to show how to use the program.  
@@ -135,3 +152,5 @@ python3 sfv-generator.py -e .zip -e .rar -e .tar -d ./folder
 > You should not mix ``-f`` and ``-d`` options.
 >
 >  When providing a list of files or folders, be sure to add the ``-f`` or ``-d`` option before each file or folder.
+>
+> The ``--outputfile`` (``-O``) work only with the ``--separated`` option (``-s``). 
