@@ -18,6 +18,19 @@ You can see how to use the program by executing this command:
 python3 sfv-generator.py -h 
 ```
 
+### **Options**
+
+| Option | Description |
+| :------------- | :------------- |
+| ``--help`` (``-h``)  | Show help  |
+| ``--file`` (``-f``)  |  Provide a file |
+| ``--directory`` (``-d``)  |  Provide a folder |
+| ``--output`` (``-o``)  |  Specify an output |
+| ``--separated`` (``-s``)  |  Merge the output |
+| ``--level`` (``-l``)  |  Specify the search depth |
+
+Let's see in details how to use these options.
+
 ### **Providing files**
 
 You can provide a file like below :

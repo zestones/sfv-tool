@@ -21,6 +21,18 @@ python3 sfv-validator.py -h
 
 You have two possibility to check the integrity of files you can give the hash and a file to the program or give an .SFV file in parameter.
 
+### **Options**
+
+| Option | Description |
+| :------------- | :------------- |
+| ``--help`` (``-h``)  | Show help  |
+| ``--file`` (``-f``)  |  Provide a file |
+| ``--crc`` (``-c``)  |  Provide a file hash |
+| ``--sfv`` (``-s``)  |  Provide a SFV file |
+| ``--depth`` (``-d``)  |  Specify the search depth |
+
+Let's see in details how to use these options.
+
 #
 
 ## Hash and Source file

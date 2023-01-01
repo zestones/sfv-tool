@@ -100,6 +100,9 @@ def process_files(arr_files, separated, output_dir):
         if (os.path.isdir(file)):
             print(bcolors.WARNING + "> " +  file + " : " + bcolors.FAIL + "Folders can't be processed !" + bcolors.ENDC)
             continue
+        elif not os.path.isfile(file):
+            print(bcolors.FAIL + '> File ' + bcolors.WARNING + bcolors.BOLD + '\"' + file + '\"' + bcolors.ENDC + bcolors.FAIL + ' not found !' + bcolors.ENDC)
+            continue
         
         crc_value = crc(file)
         filename = os.path.basename(file)
@@ -131,8 +134,13 @@ def process_directory(arr_dir, arr_ext, separated, output_dir, level):
     arr_files = []
     # retrieve the files inside the directories
     for dir in arr_dir:
-        for path, subdirs, files in walklevel(dir, level):
-            for file in files:
+        if not os.path.isdir(dir):
+            print(bcolors.FAIL + '> Folder ' + bcolors.WARNING + bcolors.BOLD + '\"' + dir + '\"' + bcolors.ENDC + bcolors.FAIL + ' not found !' + bcolors.ENDC)
+            continue
+        
+        # retrieve the files in the directory
+        for path, _, files in walklevel(dir, level):
+            for file in files:      
                 _, ext = os.path.splitext(file)
                 if arr_ext != []:
                     if ext in arr_ext: arr_files.append(os.path.join(path, file))
