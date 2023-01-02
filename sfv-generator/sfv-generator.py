@@ -167,7 +167,7 @@ def process_directory(arr_dir, arr_ext, separated, output_dir, level):
 def main(argv):
     # get the option 
     try:
-        opts, _ = getopt.getopt(argv[1:], 'hsd:f:o:l:e:O:', ['help', 'file=', 'directory=', 'output=', 'separated=', 'level=', 'extension=', 'outputfile='])
+        opts, _ = getopt.getopt(argv[1:], 'hsd:f:o:l:e:O:', ['help', 'file=', 'directory=', 'outputfolder=', 'separated=', 'level=', 'extension=', 'outputfile='])
     except getopt.GetoptError: usage(argv[0])
     
     if (len(argv) < 2): usage(argv[0])
