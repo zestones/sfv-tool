@@ -77,8 +77,11 @@ def crc(filename):
     # Open and read binary file
     for line in open(filename, "rb"):
         prev = zlib.crc32(line, prev)
-    return "%X" % (prev & 0xFFFFFFFF)
-
+    
+    crc32 = "%X" % (prev & 0xFFFFFFFF)
+    zero = ''.join('0' for _ in range (8 - len(crc32)))
+    return (zero + crc32)
+     
 def error_file_exist(file, source_file):
     print(bcolors.WARNING + 'The file \"' + bcolors.BOLD + file + '\" already exist.' + bcolors.ENDC)
     if source_file != '': print(bcolors.BOLD + 'The source file is : ' + bcolors.FAIL + source_file + bcolors.ENDC)
@@ -228,7 +231,8 @@ def main(argv):
    
     print(bcolors.OKGREEN + '================================================================')
     print('> Done !')
-    print('> Execution time : '+ str(end - begin) + 's')
+    print('> Execution time : ', end='')
+    print('%.2f' % (end - begin), end='s\n')
     print('================================================================' + bcolors.ENDC)
 
 if __name__ == '__main__':
