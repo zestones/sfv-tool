@@ -3,6 +3,7 @@
 # import
 import getopt
 import zlib
+import time
 import copy
 import sys
 import os
@@ -55,7 +56,10 @@ def crc(filename):
     # Open and read binary file
     for line in open(filename, "rb"):
         prev = zlib.crc32(line, prev)
-    return "%X" % (prev & 0xFFFFFFFF)
+    
+    crc32 = "%X" % (prev & 0xFFFFFFFF)
+    zero = ''.join('0' for _ in range (8 - len(crc32)))
+    return (zero + crc32)
 
 def retrieve_file_data(file):
     arr_file, arr_hash = [], []
@@ -160,8 +164,17 @@ def main(argv):
             depth = True
     
     print()
+    begin = time.time()
     process_source_hash(arr_source, arr_crc_hash, '')
     process_sfv_file(arr_sfv, depth)
+    end = time.time()
+    print()
+
+    print(bcolors.OKGREEN + '================================================================')
+    print('> Done !')
+    print('> Execution time : ', end='')
+    print('%.2f' % (end - begin), end='s\n')
+    print('================================================================' + bcolors.ENDC)
 
 if __name__ == '__main__':
     main(sys.argv)
