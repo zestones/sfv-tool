@@ -64,7 +64,7 @@ def retrieve_file_data(file):
     Lines = file.readlines()
     for line in Lines:
         # We split the line with the space separator 
-        data = re.split('\s\s+', line)
+        data = re.split(' ', line)
         
         if len(data) == 2:
             arr_file.append(data[0])
@@ -83,6 +83,7 @@ def check_corruption(file, crc_hash):
 def process_source_hash(arr_source, arr_hash, dir):
     for file, hash in zip(arr_source, arr_hash):
         path = os.path.join(dir, file)
+        print(path)
         check_corruption(path, hash)
 
 def process_source_hash_depth(arr_file, arr_hash, dir):

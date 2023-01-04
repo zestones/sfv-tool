@@ -2,6 +2,7 @@
 
 # import
 import getopt
+import time
 import zlib
 import sys
 import os
@@ -87,6 +88,7 @@ def error_file_exist(file, source_file):
 
 # write/create the the content of the sfv file 
 def write_sfv(dir_to_file, content):
+        
     os.makedirs(os.path.dirname(dir_to_file), exist_ok=True)
     
     f = open(dir_to_file, 'w+')
@@ -98,8 +100,12 @@ def process_files(arr_files, separated, output_dir):
     header = '; author : zestones -- open source code : https://github.com/zestones/sfv-tool\n\n'
     content, ext = '', '.sfv'
     
-    if(not separated): content = header
-    
+    if(not separated): 
+        content = header
+        print(bcolors.OKCYAN + '-------------------------------------------------------------' + bcolors.BOLD)
+        print(bcolors.OKCYAN + '---( Creating : ' +  (OUTPUT_FILENAME + ext) + ' )---' + bcolors.ENDC)
+        print(bcolors.OKCYAN + '-------------------------------------------------------------' + bcolors.BOLD)
+        
     for file in arr_files:
         if (os.path.isdir(file)):
             print(bcolors.WARNING + "> " +  file + " : " + bcolors.FAIL + "Folders can't be processed !" + bcolors.ENDC)
@@ -111,18 +117,26 @@ def process_files(arr_files, separated, output_dir):
         crc_value = crc(file)
         filename = os.path.basename(file)
        
-        if (not separated): content += filename.ljust(50) + '\t'.expandtabs(50) + '\t' + crc_value + '\n'
+        if (not separated): 
+            content += filename + ' ' + crc_value + '\n'
+            print(bcolors.OKBLUE + '> Adding : ' + filename + bcolors.ENDC)
         else:
             if output_dir == './': path = file
             else : path = filename          
             # extract the name and the extension of the file
             name, _ = os.path.splitext(path)
             # set the content of the file
-            content = header + filename + '\t' + crc_value + '\n'
+            content = header + filename + ' ' + crc_value + '\n'
             # the sfv file path
             dir_to_file = output_dir + '/' + name + ext
             if (os.path.isfile(dir_to_file) and error_file_exist(dir_to_file, file) != POSITIVE_ANSWER): continue
-              
+            print()
+            print(bcolors.OKCYAN + '-------------------------------------------------------------' + bcolors.BOLD)
+            print(bcolors.OKCYAN + '---( Creating : ' +  (name + ext) + ' )---' + bcolors.ENDC)
+            print(bcolors.OKCYAN + '-------------------------------------------------------------' + bcolors.BOLD)
+
+            print(bcolors.OKBLUE + '> Adding : ' + filename + bcolors.ENDC)
+            
             # write the file content
             write_sfv(dir_to_file, content)
    
@@ -206,10 +220,16 @@ def main(argv):
             OUTPUT_FILENAME = arg
     
     print()
+    begin = time.time()
     if (arr_files != []): process_files(arr_files, separated, output_dir)
     if (arr_dir != []): process_directory(arr_dir, arr_ext, separated, output_dir, level)
-    print(bcolors.OKGREEN + "> Done !" + bcolors.ENDC)
-
+    end = time.time()
+    print()
+   
+    print(bcolors.OKGREEN + '================================================================')
+    print('> Done !')
+    print('> Execution time : '+ str(end - begin) + 's')
+    print('================================================================' + bcolors.ENDC)
 
 if __name__ == '__main__':
     main(sys.argv)
