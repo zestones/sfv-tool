@@ -81,7 +81,7 @@ def check_corruption(file, crc_hash):
         print(bcolors.FAIL + '> File ' + bcolors.WARNING + bcolors.BOLD + '\"' + file + '\"' + bcolors.ENDC + bcolors.FAIL + ' not found !' + bcolors.ENDC)
         return
 
-    if (crc(file) == crc_hash): print(bcolors.OKGREEN + '> The file ' + bcolors.OKBLUE  + bcolors.BOLD + '\"' +  file + '\"' + bcolors.ENDC + bcolors.OKGREEN + ' is not corrupted !' + bcolors.ENDC)
+    if (crc(file).lower() == crc_hash): print(bcolors.OKGREEN + '> The file ' + bcolors.OKBLUE  + bcolors.BOLD + '\"' +  file + '\"' + bcolors.ENDC + bcolors.OKGREEN + ' is not corrupted !' + bcolors.ENDC)
     else : print(bcolors.FAIL + '> The file ' + bcolors.WARNING + bcolors.BOLD + '\"' + file + '\"' + bcolors.ENDC + bcolors.FAIL + ' is corrupted !' + bcolors.ENDC)
     
 def process_source_hash(arr_source, arr_hash, dir):
