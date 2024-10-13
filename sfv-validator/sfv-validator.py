@@ -81,7 +81,7 @@ def check_corruption(file, crc_hash):
         print(bcolors.FAIL + '> File ' + bcolors.WARNING + bcolors.BOLD + '\"' + file + '\"' + bcolors.ENDC + bcolors.FAIL + ' not found !' + bcolors.ENDC)
         return
 
-    if (crc(file).lower() == crc_hash): print(bcolors.OKGREEN + '> The file ' + bcolors.OKBLUE  + bcolors.BOLD + '\"' +  file + '\"' + bcolors.ENDC + bcolors.OKGREEN + ' is not corrupted !' + bcolors.ENDC)
+    if (crc(file) == crc_hash): print(bcolors.OKGREEN + '> The file ' + bcolors.OKBLUE  + bcolors.BOLD + '\"' +  file + '\"' + bcolors.ENDC + bcolors.OKGREEN + ' is not corrupted !' + bcolors.ENDC)
     else : print(bcolors.FAIL + '> The file ' + bcolors.WARNING + bcolors.BOLD + '\"' + file + '\"' + bcolors.ENDC + bcolors.FAIL + ' is corrupted !' + bcolors.ENDC)
     
 def process_source_hash(arr_source, arr_hash, dir):
@@ -128,6 +128,8 @@ def process_sfv_file(arr_sfv, depth):
             continue
         
         arr_file, arr_hash = retrieve_file_data(file)
+        arr_hash = [hash.upper() for hash in arr_hash]
+        
         if not depth: process_source_hash(arr_file, arr_hash, dir)
         else : process_source_hash_depth(arr_file, arr_hash, dir)
 
@@ -165,6 +167,7 @@ def main(argv):
     
     print()
     begin = time.time()
+    arr_crc_hash = [hash.upper() for hash in arr_crc_hash]
     process_source_hash(arr_source, arr_crc_hash, '')
     process_sfv_file(arr_sfv, depth)
     end = time.time()
